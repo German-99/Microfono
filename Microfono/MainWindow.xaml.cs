@@ -30,7 +30,7 @@ namespace Microfono
 			InitializeComponent();
 		}
 
-		private void Btniniciar_Click(object sender, RoutedEventArgs e)
+		private void btniniciar_Click(object sender, RoutedEventArgs e)
 		{
 			//inicializar la conexion
 			waveIn = new WaveIn();
@@ -49,7 +49,47 @@ namespace Microfono
 
 		private void WaveIn_DataAvailable(object sender, WaveInEventArgs e)
 		{
-			throw new NotImplementedException();
-		}
+            byte[] buffer = e.Buffer;
+            int bytesGrabados = e.BytesRecorded;
+            int numMuestras = bytesGrabados / 2;
+            int exponente = 0;
+            int numeroBits = 0;
+
+            do
+            {
+                numeroBits = (int)Math.Pow(2, exponente);
+            } while (numeroBits < numMuestras);
+            exponente -= 1;
+            numeroBits = (int)Math.Pow(2, exponente);
+            Complex[] muestrasComplejas = new Complex[numeroBits];
+
+            for (int i = 0; i < bytesGrabados; i += 2)
+            {
+                short muestra = (short)(buffer[i + 1] << 8 | buffer[i]);
+                float muestra32bits = (float)muestra / 32768.0f;
+                if(i/2 < numeroBits)
+                {
+                    muestrasComplejas[i / 2].X = muestra32bits;
+                }
+                muestrasComplejas[i/2].X = muestra32bits;
+
+            }
+            FastFourierTransform.FFT(true, exponente, muestrasComplejas);
+
+            float[] valoresAbsolutos = new float[muestrasComplejas.Length];
+
+            for(int i = 0; i < muestrasComplejas.Length; i++)
+            {
+                valoresAbsolutos[i] = (float)Math.Sqrt((muestrasComplejas[i].X * muestrasComplejas[i].X) + (muestrasComplejas[i].Y * muestrasComplejas[i].Y));
+            }
+
+            int indiceValorMaximo =
+                valoresAbsolutos.ToList().IndexOf(
+                valoresAbsolutos.Max());
+
+            float frecuenciaFundamental = (float)(indiceValorMaximo * formato.SampleRate) / (float)valoresAbsolutos.Length;
+
+            lblHz.Text = frecuenciaFundamental.ToString("n") + " Hz";
+        }
 	}
 }

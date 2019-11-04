@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="146" Width="800">
     <Grid Height="115" VerticalAlignment="Top">
-        <Button x:Name="btniniciar" Content="Iniciar" HorizontalAlignment="Left" Margin="0,29,0,0" VerticalAlignment="Top" Width="75" Click="Btniniciar_Click"/>
+        <Button x:Name="btniniciar" Content="Iniciar" HorizontalAlignment="Left" Margin="0,29,0,0" VerticalAlignment="Top" Width="75" Click="btniniciar_Click"/>
         <Button x:Name="btndetener" Content="Detener" HorizontalAlignment="Left" Margin="0,82,0,0" VerticalAlignment="Top" Width="75"/>
         <TextBlock x:Name="lblHz" HorizontalAlignment="Left" Margin="726,43,0,0" TextWrapping="Wrap" Text="-Hz" VerticalAlignment="Top" FontSize="36"/>
 
