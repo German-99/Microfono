@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
 using NAudio;
 using NAudio.Wave;
 using NAudio.Dsp;
@@ -57,6 +56,7 @@ namespace Microfono
 
             do
             {
+                exponente ++;
                 numeroBits = (int)Math.Pow(2, exponente);
             } while (numeroBits < numMuestras);
             exponente -= 1;
@@ -71,7 +71,6 @@ namespace Microfono
                 {
                     muestrasComplejas[i / 2].X = muestra32bits;
                 }
-                muestrasComplejas[i/2].X = muestra32bits;
 
             }
             FastFourierTransform.FFT(true, exponente, muestrasComplejas);
